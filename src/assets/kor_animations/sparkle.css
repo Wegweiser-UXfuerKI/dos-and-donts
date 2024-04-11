@@ -1,0 +1,49 @@
+/* 
+ Modified version of the jQuery sparkle plugin
+ Link: https://www.jqueryscript.net/animation/Custom-Sparkle-Animations-With-jQuery-SVG-Sparkle.html
+*/
+
+@-moz-keyframes my-sparkle {
+  0%   {
+    opacity: 0;
+    -moz-transform: rotate(0deg) scale(0);
+  }
+  50%  {
+    opacity: 1;
+    -moz-transform: rotate(100deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    -moz-transform: rotate(200deg) scale(0);
+  }
+}
+
+@-webkit-keyframes my-sparkle {
+  0%   {
+    opacity: 0;
+    -webkit-transform: rotate(0deg) scale(0);
+  }
+  50%  {
+    opacity: 1;
+    -webkit-transform: rotate(100deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: rotate(200deg) scale(0);
+  }
+}
+
+@keyframes my-sparkle {
+  0%   {
+    opacity: 0;
+    transform: rotate(0deg) scale(0);
+  }
+  50%  {
+    opacity: 1;
+    transform: rotate(100deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(200deg) scale(0);
+  }
+}

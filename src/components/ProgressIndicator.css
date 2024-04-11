@@ -1,0 +1,43 @@
+/* Progress indication consisting of one bubble for each task */
+
+.progress-indicator {
+	--distance-to-edge: 30px;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 80px;
+	right: var(--distance-to-edge);
+	top: var(--distance-to-edge);
+	z-index: 100;
+	max-width: 65%;
+}
+
+.bubble {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: var(--grey-4);
+	margin: 0 6px;
+	cursor: pointer;
+	transition: scale 0.3s ease, height 0.3s ease;
+	transition: background-color 0.3s ease, height 0.3s ease;
+  box-shadow: var(--flat-drop-shadow);
+}
+
+.bubble.active {
+	/* Scale up the active bubble to indicate where the user is located right now */
+	transform: scale(1.2);
+	background-color: white;
+}
+
+
+/* Darken the colors when this class is applied; Used for the EXPLAIN view of the system */
+
+.progress-indicator.darken .bubble {
+	background-color: var(--grey-4);
+}
+
+.progress-indicator.darken .bubble.active {
+	background-color: var(--grey-2);
+}

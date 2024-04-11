@@ -1,0 +1,99 @@
+/* Mobile Responsiveness of the interactive element */
+
+@media (max-width: 768px) {
+	.split-container {
+		--mobile-padding: 20px;
+		flex-direction: column;
+		align-items: center;
+	}
+
+  .nav-protected-padding {
+    --height-of-navbar: 0;
+    padding-top: var(--height-of-navbar);
+  }
+
+	#help-button,
+	#check-sub-text,
+	#tip-label {
+		display: none;
+	}
+
+	#check-button {
+		padding-left: 3rem;
+		padding-right: 3rem;
+	}
+
+	#show-tip-button {
+		right: 12px;
+		bottom: 1px;
+		width: 50px;
+		height: 50px;
+	}
+
+	#show-tip-button img {
+		width: 2.25rem;
+		height: 2.25rem;
+	}
+
+	#left-pane,
+	#mid-pane,
+	#right-pane {
+		position: static;
+		width: 100%;
+	}
+
+	#left-content {
+		row-gap: 60px;
+		padding: var(--mobile-padding);
+	}
+
+	#right-content {
+		padding: var(--mobile-padding);
+	}
+
+	#left-pane {
+		flex: 0 0 50%;
+	}
+
+	#mid-pane {
+		flex: 0 0 50%;
+		padding: var(--mobile-padding);
+	}
+
+	#right-pane {
+		flex: 0 0 0;
+	}
+
+	.split-container.right-visible #left-pane {
+		flex: 0 0 0;
+		width: 100%;
+	}
+
+	.split-container.right-visible #mid-pane {
+		flex: 0 0 50%;
+		width: 100%;
+	}
+
+	.split-container.right-visible #right-pane {
+		flex: 0 0 50%;
+		width: 100%;
+	}
+
+	.split-container.right-visible #mid-content {
+		padding-top: 40px;
+	}
+
+	.split-container.right-visible #right-content {
+		padding-top: 40px;
+	}
+
+	.split-container.right-visible #back-forth-container {
+		margin-top: 10px;
+		justify-content: center;
+	}
+
+	#quote-icon {
+		max-width: 50px;
+		left: -15px;
+	}
+}

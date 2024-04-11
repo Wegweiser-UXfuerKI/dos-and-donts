@@ -1,0 +1,60 @@
+/* 
+  Custom scrollbar styling
+  Credits: https://www.cssportal.com/css-scrollbar-generator/ 
+*/
+
+/* Firefox-specific styling */
+
+*::-moz-scrollbar {
+    width: 10px;
+}
+
+*::-moz-scrollbar-track {
+    border-radius: 5px;
+}
+
+*::-moz-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: var(--grey-4);
+}
+
+*::-moz-scrollbar-thumb:hover {
+    background-color: var(--grey-3);
+}
+
+*::-moz-scrollbar-thumb:active {
+    background-color: var(--grey-3);
+}
+
+
+/* Chrome, Edge and Safari */
+
+*::-webkit-scrollbar {
+    height: 10px;
+    width: 8px;
+}
+*::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #D9D9D9;
+}
+
+*::-webkit-scrollbar-track:hover {
+    background-color: #D9D9D9;
+}
+
+*::-webkit-scrollbar-track:active {
+    background-color: #D9D9D9;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: var(--grey-4);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--grey-3);
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background-color: var(--grey-3);
+}

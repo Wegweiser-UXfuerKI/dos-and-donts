@@ -1,0 +1,87 @@
+/* Informing text with a cover image, reading estimate, special-colored elements, and a button to the learn element */
+
+#img-cover {
+  /* The background gradient of the cover image */
+	background-image: linear-gradient(to right, var(--cyan-1), var(--mint-1));
+	border-radius: 30px;
+	height: 12.5rem;
+	width: var(--narrow-width);
+	object-fit: scale-down;
+	object-position: center;
+}
+
+@media (max-width: 768px) {
+	#img-cover {
+		height: 6rem;
+	}
+}
+
+#reading-estimate {
+	margin-top: 1.5rem;
+	font-size: var(--fs-sm);
+	width: var(--narrow-width);
+	color: var(--grey-3);
+}
+
+#text-wrapper {
+	--narrow-width: 800px;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+
+#text-content {
+	width: var(--narrow-width);
+}
+
+@media (max-width: 900px) {
+	#text-content,
+	#img-cover,
+	#reading-estimate {
+		width: 90%;
+	}
+}
+
+
+/* The different html elements that get generated from the markdown file */
+
+#text-content h1 {
+	font-size: var(--fs-2xl);
+	font-weight: 900;
+	margin-bottom: 1rem;
+	margin-top: 0rem;
+}
+
+#text-content h2 {
+	font-size: var(--fs-lg);
+	font-weight: 800;
+	margin-bottom: 0.7rem;
+}
+
+#text-content p {
+	font-size: var(--fs-md);
+	color: var(--grey-1);
+	font-weight: 500;
+	margin-bottom: 30px;
+	text-align: justify;
+}
+
+#text-content a {
+	color: var(--cyan-1);
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+
+/* Specific elements that get colored differently */
+
+.md-colored-highlight {
+	color: var(--lavender-1);
+}
+
+#text-content .summary-heading {
+	background-image: linear-gradient(to right, var(--lavender-1), var(--pink-1));
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	font-size: var(--fs-xl);
+}

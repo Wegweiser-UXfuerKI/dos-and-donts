@@ -1,0 +1,62 @@
+/* Navigation bar with its logo, title and nav buttons */
+
+.home {
+	height: 100%;
+	text-decoration: none;
+	color: var(--grey-1);
+}
+
+.logo {
+	--logo-size: 80px;
+	width: var(--logo-size);
+	height: var(--logo-size);
+	min-width: var(--logo-size);
+	min-height: var(--logo-size);
+}
+
+.nav-bar {
+	height: 80px;
+  min-height: 80px;
+  max-height: 80px;
+  
+	background-color: var(--background-grey-1);
+	border-radius: 0px 0px 24px 24px;
+	box-shadow: 0px 1px 10px 0.11px var(--grey-2);
+	overflow: hidden;
+	white-space: nowrap;
+
+	z-index: 9999;
+  
+	width: 100%;
+	position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.nav-button {
+	font-size: var(--fs-md);
+	font-weight: 600;
+	border-radius: 25px;
+	border: 2px solid var(--grey-1);
+	color: var(--grey-1);
+	text-decoration: none;
+	padding: 10px 16px;
+	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-button:hover,
+.nav-button.active-link {
+	background-color: var(--grey-1);
+	color: white;
+}
+
+#website-title {
+	font-size: var(--fs-xl);
+}
+
+@media (max-width: 450px) {
+	.logo {
+    /* If screen is small enough, hide the logo to give more space */
+		display: none;
+	}
+}

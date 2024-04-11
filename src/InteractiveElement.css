@@ -1,0 +1,841 @@
+/* The actual learning element consisting of 3 main panes */
+
+:root {
+	/* UX-fuer-KI hues and shades */
+	--grey-1: #21202b;
+	--grey-2: #54506a;
+	--grey-3: #817c9c;
+	--grey-4: #b7b4c7;
+
+	--pink-1: #d177b3;
+	--pink-2: #e8bbd9;
+	--pink-3: #f8ebf4;
+
+	--rose-1: #c177d1;
+	--rose-2: #dfbbe8;
+	--rose-3: #f6ebf8;
+
+	--lavender-1: #8377d1;
+	--lavender-2: #c1bbe8;
+	--lavender-3: #edebf8;
+
+	--cyan-1: #77a9d1;
+	--cyan-2: #ebf3f8;
+	--cyan-3: #f6f5fc;
+
+	--mint-1: #77d1cb;
+	--mint-2: #bbe8e5;
+	--mint-3: #ebf8f7;
+
+	/* Own colors */
+	--do-green: #39c55e;
+	--dont-red: #e96c61;
+	--background-grey-1: #f0f0f0;
+	--background-grey-2: #f6f6f6;
+	--background-grey-3: #353443;
+	--background-grey-4: #414051;
+	--check-button-grey: #f6f5fc;
+	--highlight-blue: #00aaf0;
+
+  /* Own font sizes used throughout the app */
+	--fs-2xl: 2.5rem;
+	--fs-xl: 1.75rem;
+	--fs-lg: 1.5rem;
+	--fs-md: 1.1rem;
+	--fs-sm: 1rem;
+	--fs-xs: 0.8rem;
+
+  /* Used for pane sliding transition */
+	--anim-panes-bezier: cubic-bezier(0.77, 0, 0.175, 1);
+	--anim-panes-duration: 1s;
+
+  /* Used for blending in the dos and donts for the EXPLAIN view */
+	--anim-do-dont-bezier: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+	--anim-do-dont-duration: 0.5s;
+
+  --flat-drop-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+@media (max-width: 1400px) {
+	:root {
+    /* Adjust the font sizes for smaller screens */
+		--fs-2xl: 2rem;
+		--fs-xl: 1.5rem;
+		--fs-lg: 1.25rem;
+		--fs-md: 1rem;
+		--fs-sm: 0.75rem;
+    --fs-xs: 0.65rem;
+	}
+}
+
+* {
+	font-family: "Inter", "Poppins", "Open Sans", "Arial";
+}
+
+.base-background {
+	background-color: var(--background-grey-2);
+}
+
+header {
+	position: fixed;
+	top: 0;
+}
+
+
+/* || The three main panes (plus the transition when the view changes) */
+
+.split-container {
+	overflow-x: hidden;
+	box-sizing: border-box;
+	display: flex;
+  min-height: 100vh;
+}
+
+#left-pane,
+#mid-pane,
+#right-pane {
+  height: 100%;
+}
+
+#left-pane {
+  padding-top: 80px;
+  max-width: 576px;
+  min-width: 330px;
+  background-color: var(--background-grey-2);
+  
+  position: absolute;
+  width: 30%;
+  left: 0;
+}
+
+#mid-pane {
+  padding-top: 80px;
+  
+  position: absolute;
+  width: 70%;
+  left: 30%;
+}
+
+#right-pane {
+  
+  position: absolute;
+  width: 50%;
+  right: -50%;
+}
+
+@media not (max-width: 768px) {
+  /* Dont apply transition on phones */
+
+	#left-pane.with-transition {
+		transition: left var(--anim-panes-duration) var(--anim-panes-bezier);
+	}
+
+	#mid-pane.with-transition {
+		transition: left var(--anim-panes-duration) var(--anim-panes-bezier), width var(--anim-panes-duration) var(--anim-panes-bezier);
+	}
+
+	#right-pane.with-transition {
+		transition: right var(--anim-panes-duration) var(--anim-panes-bezier);
+	}
+}
+
+
+/* These attributes need to be adjusted for smooth transition on view change */
+.split-container.right-visible #left-pane {
+  left: -30%;
+}
+
+.split-container.right-visible #mid-pane {
+  left: 0;
+  width: 50%;
+}
+
+.split-container.right-visible #right-pane {
+  right: 0;
+}
+
+#left-pane,
+#mid-pane,
+#right-pane {
+	will-change: left, right, width;
+}
+
+.nav-protected-padding {
+  --height-of-navbar: 80px;
+  padding-top: var(--height-of-navbar);
+}
+
+.content-distribute {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.pt-to-viewport {
+  padding-top: 30px;
+}
+
+.pb-to-viewport {
+  padding-bottom: 30px;
+}
+
+
+/* || Background pattern for the mid-pane, consisting of repeating lines that form a tilted grid */
+
+.pattern-darker {
+	--light-gray: #2f2e3d;
+	background-color: var(--grey-1);
+	background-image: repeating-linear-gradient(25deg, transparent, transparent 34px, var(--light-gray) 34px, var(--light-gray) 35px),
+		repeating-linear-gradient(-25deg, transparent, transparent 34px, var(--light-gray) 34px, var(--light-gray) 35px);
+}
+
+
+/* || Everything related to the left-pane's content */
+
+#left-content {
+	padding-left: 15%;
+	padding-right: 15%; 
+	line-height: 1.25;
+  min-height: 100%;
+}
+
+.gap-left-content {
+  row-gap: 5rem;
+}
+
+@media (max-height: 700px) {
+  .gap-left-content {
+    row-gap: 2.5rem;
+  }
+}
+
+#exercise-tag {
+	font-size: var(--fs-lg);
+	font-weight: bold;
+	color: var(--lavender-1);
+}
+
+#exercise-tag p,
+#task-description,
+#refers-to {
+	font-weight: 600;
+}
+
+#task-description {
+	font-size: var(--fs-lg);
+	color: var(--grey-2);
+	box-sizing: content-box;
+	max-width: 80%;
+	margin-inline-end: auto;
+}
+
+#guideline-text {
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	box-sizing: content-box;
+	position: relative;
+	z-index: 2;
+
+	font-size: var(--fs-2xl);
+	font-weight: 700;
+	letter-spacing: -0.8px;
+}
+
+#guideline-container {
+	box-sizing: border-box;
+	position: relative;
+}
+
+.text-gradient-animation {
+	--background: var(--background-grey-2);
+	--color-stop-1: var(--lavender-1);
+	--color-stop-2: var(--rose-1);
+	--color-stop-3: var(--pink-1);
+	color: transparent;
+	background: linear-gradient(
+		74deg,
+		var(--color-stop-1) 0,
+		var(--color-stop-2) 9%,
+		var(--color-stop-3) 20%,
+		var(--color-stop-3) 24%,
+		var(--color-stop-2) 35%,
+		var(--color-stop-1) 44%,
+		var(--color-stop-2) 50%,
+		var(--color-stop-3) 56%,
+		var(--background) 89%,
+		var(--background) 100%
+	);
+	background-size: 400% 100%;
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: text-gradient-keyframes 1.7s ease-in-out reverse;
+	animation-play-state: running;
+}
+
+@keyframes text-gradient-keyframes {
+	0% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 100% 50%;
+	}
+}
+
+#refers-to {
+	font-size: var(--fs-md);
+	color: var(--grey-3);
+	text-transform: uppercase;
+}
+
+#referenced-article {
+	font-size: var(--fs-md);
+	font-weight: 600;
+	border-radius: 24px;
+	border-style: solid;
+	border-color: var(--grey-4);
+	max-width: 80%;
+	overflow: hidden;
+	word-break: break-all;
+	text-decoration: none;
+	color: var(--grey-1);
+	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+#referenced-article:hover {
+	background-color: var(--grey-1);
+	border-color: var(--grey-1);
+	color: white;
+}
+
+#article-img {
+	margin: 6px;
+	min-height: 60px;
+	min-width: 60px;
+	height: 60px;
+	width: 60px;
+	border-radius: 20px;
+	background-color: #e2e2e2;
+	overflow: hidden;
+}
+
+#sparkle-icon {
+	margin-top: -2px;
+	margin-right: 5px;
+}
+
+#quote-icon {
+	max-width: 70px;
+	position: absolute;
+	top: -20px;
+	left: -35px;
+	z-index: 1;
+}
+
+.fly-in-left {
+	opacity: 0;
+	animation: fade-in-left cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+
+@keyframes fade-in-left {
+	from {
+		opacity: 0;
+		transform: translateX(-320px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+
+/* || Everything related to the mid-pane's content */
+
+.app-width {
+	max-width: 300px;
+	width: 100%;
+	overflow: hidden;
+}
+
+#app1 img,
+#app2 img,
+#app1 link,
+#app2 link {
+	object-fit: contain;
+  background-color: var(--background-grey-1);
+}
+
+#app-container {
+	padding-left:   0.5rem;
+	padding-right:  0.5rem;
+}
+
+.pill {
+	position: absolute;
+	margin-left: 8px;
+	margin-top: 8px;
+	text-align: center;
+	font-weight: 300;
+	color: white;
+	padding: 18px 12px;
+
+	max-width: 25px;
+	max-height: 35px;
+	background-color: var(--grey-1);
+	border-radius: 24px;
+}
+
+.ref-marker {
+	display: contents;
+	text-align: center;
+	font-weight: 900;
+	color: var(--lavender-1);
+	font-size: var(--fs-md);
+	font-family: "Asap";
+}
+
+.cassette-btn-light {
+	appearance: button;
+	border-radius: 15px;
+	border: 0px solid transparent;
+	background-color: var(--check-button-grey);
+	border-bottom: 5px solid var(--grey-4);
+	display: inline-flex;
+	color: var(--grey-1);
+
+	font-size: var(--fs-md);
+	font-weight: 700;
+	letter-spacing: 0.8px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: all 0.3s ease;
+	margin: 0;
+}
+
+.cassette-btn-dark {
+	appearance: button;
+	border-radius: 15px;
+	border: 0px solid transparent;
+	background-color: var(--grey-1);
+	border-bottom: 5px solid var(--grey-2);
+	transition: all 0.1s;
+	display: inline-flex;
+	color: white;
+
+	font-size: var(--fs-md);
+	font-weight: 700;
+	letter-spacing: 0.8px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+
+	margin: 0;
+}
+
+.cassette-btn-light:active,
+.cassette-btn-dark:active {
+	border-bottom: 0px;
+	margin-top: 5px;
+}
+
+.cassette-btn-light:hover:not(.greyed-out):not(:active) {
+	--hover-check-button-grey: #d6d5dc;
+	--hover-check-button-grey-border: #a7a4b7;
+	background-color: var(--hover-check-button-grey);
+	border-bottom: 5px solid var(--hover-check-button-grey-border);
+}
+
+.cassette-btn-dark:hover:not(:active) {
+	--hover-grey-1: #11101b;
+	--hover-grey-2: #44405a;
+	background-color: var(--hover-grey-1);
+	border-color: var(--hover-grey-2);
+}
+
+.cassette-btn-light.greyed-out {
+	background-color: var(--grey-4);
+	border: 2px solid var(--grey-4);
+	border-bottom: 2px solid var(--grey-4);
+	margin-top: 5px;
+	color: var(--grey-3);
+	cursor: default;
+}
+
+.uniform-x-gap {
+	column-gap: 2rem;
+}
+
+.cassette-btn-illustration {
+	appearance: button;
+	border-radius: 16px;
+	border: 5px solid var(--grey-4);
+	border-bottom: 10px solid var(--grey-4);
+	background-color: var(--grey-4);
+	transition: all 0.1s;
+	display: inline-flex;
+
+	font-size: var(--fs-md);
+	font-weight: 700;
+	letter-spacing: 0.8px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.cassette-btn-illustration:disabled {
+	cursor: default;
+}
+
+.cassette-btn-illustration:hover:not(:disabled):not(.selected) {
+	background-color: var(--grey-3);
+	border-color: var(--grey-3);
+}
+
+.cassette-btn-illustration:active:not(:disabled) {
+	border-bottom: 5px solid #1cb0f6;
+	margin-top: 5px;
+}
+
+#app1,
+#app2 {
+	z-index: 10;
+}
+
+#app1:hover:not(#app1.selected):not(#app2.selected):not(.unselected-contracted),
+#app2:hover:not(#app1.selected):not(#app2.selected):not(.unselected-contracted) {
+  /* 
+   A box shadow gets applied while hovering an app and stays when selected.
+   It can't be applied when the apps are already contracted. 
+  */
+	--choose-grey: rgba(100, 100, 100, 0.5);
+	box-shadow: var(--choose-grey) 0px 0px 120px;
+}
+
+.cassette-btn-illustration.selected {
+	--selected-blue: #1cb0f6;
+	--selected-blue-alpha: rgba(28, 176, 256, 0.6);
+	--choose-grey: rgba(100, 100, 100, 0.5);
+
+	border-bottom: 5px solid var(--selected-blue);
+	border-color: var(--selected-blue);
+	margin-top: 5px;
+	cursor: default;
+	box-shadow: var(--selected-blue-alpha) 0px 3px 8px, var(--choose-grey) 0px 0px 120px;
+}
+
+.cassette-btn-illustration.unselected-contracted {
+	border-bottom: 5px solid var(--grey-4);
+	border-color: var(--grey-4);
+	margin-top: 5px;
+	cursor: default;
+}
+
+#check-button {
+	display: flex;
+	transition: all 0.1s ease;
+	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+	justify-content: center;
+	align-items: center;
+}
+
+#check-sub-text {
+	text-align: center;
+	color: var(--grey-3);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+#sub-app-container {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+#dos-and-donts {
+	word-wrap: break-word;
+	display: none;
+	opacity: 0;
+	color: white;
+}
+
+#sub-app-container.right-visible {
+	width: 100%;
+}
+
+#sub-app-container.right-visible #check-button,
+#sub-app-container.right-visible #check-sub-text,
+.split-container.right-visible #tip-container {
+	display: none;
+	pointer-events: none;
+}
+
+#sub-app-container.right-visible #dos-and-donts {
+	display: flex;
+	pointer-events: auto;
+	animation: fadeIn var(--anim-do-dont-duration) var(--anim-do-dont-bezier);
+	opacity: 1;
+}
+
+#do-label,
+#dont-label {
+	font-weight: 800;
+	letter-spacing: 1px;
+	width: 100%;
+	color: white;
+	border-radius: 15px;
+	font-size: var(--fs-xs);
+	text-transform: uppercase;
+}
+
+.do-dont-description {
+	text-align: center;
+	font-size: var(--fs-sm);
+}
+
+#do-label {
+	background-color: var(--do-green);
+}
+
+#dont-label {
+	background-color: var(--dont-red);
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+
+/* || Everything related to the right-pane's content */
+
+.split-container:not(.right-visible) #back-button,
+.split-container:not(.right-visible) #next-button {
+  /* Make right buttons untabbable when not on the screen */
+	display: none;
+}
+
+#right-content {
+	padding-left: 20%;
+	padding-right: 20%;
+	line-height: 1.5;
+}
+
+@media (max-width: 1200px) {
+  #right-content {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+}
+
+.gap-right-content {
+  row-gap: 1rem;
+}
+
+#kor-container {
+	font-size: var(--fs-xl);
+	font-weight: 900;
+	color: var(--grey-1);
+	display: inline-block;
+	min-height: 30px;
+}
+
+#kor-container.shake {
+  /* Shake animation of kor container */
+	--angle: 5deg;
+	animation: shake 0.3s;
+	animation-delay: 0.9s;
+}
+
+@keyframes shake {
+	25% {
+		transform: rotate(calc(var(--angle) * -1));
+	}
+
+	50% {
+		transform: rotate(var(--angle));
+	}
+
+	100% {
+		transform: rotate(0deg);
+	}
+}
+
+#explanation-container {
+	font-size: var(--fs-md);
+	font-weight: 600;
+	text-align: left;
+	color: var(--grey-1);
+
+	white-space: pre-line;
+	word-wrap: break-word;
+
+	overflow-y: scroll;
+	max-height: 50vh;
+	mask-image: linear-gradient(to bottom, var(--grey-1) 95%, transparent 100%);
+	-webkit-mask-image: linear-gradient(to bottom, var(--grey-1) 95%, transparent 100%);
+	padding-bottom: 20px; /* This way the fade out at the bottom does not affect the last sentence */
+}
+
+#back-button {
+	font-size: var(--fs-md);
+	font-weight: 700;
+	letter-spacing: 0.8px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#next-button {
+	white-space: nowrap;
+	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+#back-button img {
+	transition: transform 0.2s ease;
+}
+
+#back-button:hover img {
+	transform: translateX(-3px);
+}
+
+mark {
+  /* Words in an explanation text that have a definition */
+	text-decoration: underline dashed;
+	text-underline-offset: 3px;
+	background-color: transparent;
+	color: var(--cyan-1);
+	font-weight: bold;
+}
+
+#end-box {
+	width: 200px;
+	height: 80px;
+	background-color: var(--lavender-1);
+	border-radius: 24px;
+	padding: 4px;
+	overflow: hidden;
+}
+
+#end-box-title {
+	height: 30%;
+	text-transform: uppercase;
+	font-weight: 600;
+	font-size: var(--fs-xs);
+	color: var(--background-grey-2);
+}
+
+#end-box-content {
+	background-color: var(--background-grey-2);
+	border-radius: 20px;
+	width: 100%;
+	flex: 1;
+	font-size: var(--fs-lg);
+	font-weight: 700;
+	color: var(--lavender-1);
+}
+
+
+/* Tip button and modal */
+
+#tip-container {
+	position: relative;
+	cursor: default;
+
+	right: 0px;
+	bottom: 0px;
+}
+
+#show-tip-button {
+	--distance-to-edge: 30px;
+	position: absolute;
+	border-radius: 50%;
+	background-color: var(--grey-4);
+	color: #ffffff;
+	cursor: pointer;
+
+	width: 60px;
+	height: 60px;
+
+	right: var(--distance-to-edge);
+	bottom: var(--distance-to-edge);
+	z-index: 100;
+	transition: background-color 0.3s ease, margin-bottom 0.1s linear;
+  box-shadow: var(--flat-drop-shadow);
+}
+
+#idea-icon.bulp-on {
+	content: url("./assets/idea-icon-on.svg");
+}
+
+#show-tip-button:hover:not(:has(#idea-icon.bulp-on)) {
+	background-color: var(--grey-3);
+	margin-bottom: 4px;
+}
+
+#show-tip-button:has(#idea-icon.bulp-on) {
+	background-color: var(--grey-3);
+}
+
+#tip-label {
+	font-size: var(--fs-md);
+	color: var(--grey-4);
+	font-weight: 600;
+	position: absolute;
+	right: 11px;
+	bottom: 62px;
+	transition: margin-bottom 0.1s linear;
+	text-transform: uppercase;
+}
+
+#tip-modal {
+	background-color: var(--lavender-1);
+	color: #fff;
+	overflow: hidden;
+	gap: 10px;
+	margin: 5px;
+}
+
+#tip-title {
+	font-weight: 700;
+	font-size: var(--fs-lg);
+	text-align: left;
+}
+
+#tip-content {
+	font-size: var(--fs-md);
+}
+
+#tip-reveal-button {
+	text-transform: uppercase;
+	font-size: var(--fs-md);
+	font-weight: 700;
+	letter-spacing: 0.8px;
+	line-height: 20px;
+}
+
+#tip-reveal-button img {
+	transition: transform 0.2s ease;
+}
+
+#tip-reveal-button:hover img {
+	transform: translateX(3px);
+}
+
+.tippy-box[data-theme~="purpleish"] {
+  /* Custom theme of tippy.js tooltip for the tip button */
+	background-color: var(--lavender-1);
+	color: white;
+}
+
+.tippy-box[data-theme~="purpleish"][data-placement^="top"] > .tippy-arrow::before,
+.tippy-box[data-theme~="purpleish"][data-placement^="bottom"] > .tippy-arrow::before,
+.tippy-box[data-theme~="purpleish"][data-placement^="left"] > .tippy-arrow::before,
+.tippy-box[data-theme~="purpleish"][data-placement^="right"] > .tippy-arrow::before {
+  /* Adjusting the colored arrow of the tooltip */
+	border-top-color: var(--lavender-1);
+}
